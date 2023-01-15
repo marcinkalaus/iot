@@ -3,9 +3,11 @@ package agh.iot.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,5 +21,7 @@ public class Device {
     private String name;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "devices_id")
-    private Set<Module> modules;
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Module> modules;
+
 }

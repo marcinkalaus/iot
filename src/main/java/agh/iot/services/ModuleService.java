@@ -1,7 +1,9 @@
 package agh.iot.services;
 
+import agh.iot.models.Device;
 import agh.iot.models.Module;
 import agh.iot.models.ModuleData;
+import agh.iot.repositories.DeviceRepository;
 import agh.iot.repositories.ModuleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +16,16 @@ import java.util.List;
 public class ModuleService {
     @Autowired
     private ModuleRepository moduleDao;
+    @Autowired
+    private DeviceRepository deviceDao;
 
-    public Module save(String name) {
+    public Module save(String name, long deviceId) {
         Module module = new Module();
         module.setName(name);
+
+        Device device = deviceDao.findById(deviceId);
+        module.setDevice(device);
+
         return moduleDao.save(module);
     }
 

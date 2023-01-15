@@ -3,6 +3,7 @@ package agh.iot.controller;
 import agh.iot.models.Device;
 import agh.iot.models.Module;
 import agh.iot.models.ModuleData;
+import agh.iot.restmodels.AddModuleRequest;
 import agh.iot.restmodels.InsertModuleDataRequest;
 import agh.iot.restmodels.UpdateModuleRequest;
 import agh.iot.services.DeviceService;
@@ -41,8 +42,8 @@ public class DataController {
     }
 
     @PostMapping(path ="/addModule")
-    public ResponseEntity<?> addModule(@RequestBody String name) throws Exception {
-        Module module = moduleService.save(name);
+    public ResponseEntity<?> addModule(@RequestBody AddModuleRequest payload) throws Exception {
+        Module module = moduleService.save(payload.getName(), payload.getDeviceId());
 
         return ResponseEntity.ok(module.getId());
     }

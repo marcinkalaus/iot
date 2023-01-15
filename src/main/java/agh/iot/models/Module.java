@@ -23,4 +23,7 @@ public class Module {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "module_id")
     private List<ModuleData> data;
+    @ManyToOne
+    @JoinColumn(name="device_id", nullable=false)
+    private Device device;
 }
