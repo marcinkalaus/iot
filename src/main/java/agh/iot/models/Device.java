@@ -1,4 +1,4 @@
-package agh.iot.Models;
+package agh.iot.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,15 +11,13 @@ import java.util.Set;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "module")
-public class Module {
+@Table(name = "devices")
+public class Device {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @Column
     private String name;
-    @Column
-    private boolean isActive;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "module_id")
-    private Set<DataModel> data;
+    @JoinColumn(name = "devices_id")
+    private Set<Module> modules;
 }

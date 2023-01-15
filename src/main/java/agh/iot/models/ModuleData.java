@@ -1,24 +1,23 @@
-package agh.iot.Models;
+package agh.iot.models;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
 @Table(name = "data")
-public class DataModel {
+public class ModuleData {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private int dataInt;
+    private Integer dataInt;
     private String dataString;
-    private boolean dataBool;
-    private float dataFloat;
+    private Boolean dataBool;
+    private Float dataFloat;
 }

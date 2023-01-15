@@ -1,6 +1,6 @@
-package agh.iot.Security;
+package agh.iot.security;
 
-import agh.iot.Service.JwtUserDetailsService;
+import agh.iot.services.JwtUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

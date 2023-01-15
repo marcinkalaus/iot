@@ -1,4 +1,4 @@
-package agh.iot.Security;
+package agh.iot.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

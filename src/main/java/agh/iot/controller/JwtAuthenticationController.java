@@ -1,10 +1,10 @@
-package agh.iot.Controller;
+package agh.iot.controller;
 
-import agh.iot.DTO.UserDto;
-import agh.iot.Security.JwtTokenUtil;
-import agh.iot.Service.JwtUserDetailsService;
-import agh.iot.Models.JwtRequest;
-import agh.iot.Models.JwtResponse;
+import agh.iot.dto.UserDto;
+import agh.iot.security.JwtTokenUtil;
+import agh.iot.services.JwtUserDetailsService;
+import agh.iot.restmodels.JwtRequest;
+import agh.iot.restmodels.JwtResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

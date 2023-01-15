@@ -1,8 +1,8 @@
-package agh.iot.Service;
+package agh.iot.services;
 
-import agh.iot.DTO.UserDto;
-import agh.iot.Repository.UserRepository;
-import agh.iot.Models.UserDao;
+import agh.iot.dto.UserDto;
+import agh.iot.repositories.UserRepository;
+import agh.iot.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,7 +22,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDao user = userDao.findByUsername(username);
+        User user = userDao.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
@@ -30,8 +30,8 @@ public class JwtUserDetailsService implements UserDetailsService {
                 new ArrayList<>());
     }
 
-    public UserDao save(UserDto user) {
-        UserDao newUser = new UserDao();
+    public User save(UserDto user) {
+        User newUser = new User();
         newUser.setUsername(user.getUsername());
         newUser.setEmail(user.getEmail());
         newUser.setPassword(bcryptEncoder.encode(user.getPassword()));

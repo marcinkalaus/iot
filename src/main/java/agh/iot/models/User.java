@@ -1,4 +1,4 @@
-package agh.iot.Models;
+package agh.iot.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = "username"),
                 @UniqueConstraint(columnNames = "email")
         })
-public class UserDao {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -37,6 +37,7 @@ public class UserDao {
     @Size(max = 120)
     @JsonIgnore
     private String password;
+    private String token;
 
     @ManyToMany
     Set<Device> devices;

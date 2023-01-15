@@ -1,4 +1,4 @@
-package agh.iot.DTO;
+package agh.iot.dto;
 
 import lombok.Data;
 
