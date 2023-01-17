@@ -1,6 +1,6 @@
 package agh.iot.dto;
 
-import agh.iot.models.Module;
+import agh.iot.entities.Module;
 import lombok.Data;
 
 import java.util.Set;

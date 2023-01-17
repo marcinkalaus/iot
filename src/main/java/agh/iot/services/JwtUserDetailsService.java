@@ -1,16 +1,20 @@
 package agh.iot.services;
 
 import agh.iot.dto.UserDto;
+import agh.iot.entities.Device;
+import agh.iot.entities.User;
 import agh.iot.repositories.UserRepository;
-import agh.iot.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
+import java.util.Set;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
@@ -37,4 +41,5 @@ public class JwtUserDetailsService implements UserDetailsService {
         newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
         return userDao.save(newUser);
     }
+
 }

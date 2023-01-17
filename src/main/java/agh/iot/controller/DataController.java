@@ -1,12 +1,11 @@
 package agh.iot.controller;
 
-import agh.iot.models.Device;
-import agh.iot.models.Module;
-import agh.iot.models.ModuleData;
-import agh.iot.restmodels.AddModuleRequest;
-import agh.iot.restmodels.InsertModuleDataRequest;
-import agh.iot.restmodels.UpdateModuleRequest;
+import agh.iot.entities.Device;
+import agh.iot.entities.Module;
+import agh.iot.entities.ModuleData;
+import agh.iot.restmodels.*;
 import agh.iot.services.DeviceService;
+import agh.iot.services.JwtUserDetailsService;
 import agh.iot.services.ModuleDataService;
 import agh.iot.services.ModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @CrossOrigin
@@ -26,10 +26,14 @@ public class DataController {
     ModuleService moduleService;
     @Autowired
     ModuleDataService moduleDataService;
+    @Autowired
+    JwtUserDetailsService userService;
 
     @PostMapping(path ="/addDevice")
-    public ResponseEntity<?> addDevice(@RequestBody String name) throws Exception {
-        Device device = deviceService.save(name);
+    public ResponseEntity<?> addDevice(@RequestBody AddDeviceRequest addDeviceRequest) throws Exception {
+        String deviceName = addDeviceRequest.getName();
+        long userId = addDeviceRequest.getUserId();
+        Device device = deviceService.save(deviceName, userId);
 
         return ResponseEntity.ok(device.getId());
     }
@@ -59,9 +63,11 @@ public class DataController {
     }
 
     @GetMapping(path ="/getModuleData")
-    public ResponseEntity<?> getModuleDataModule(@RequestBody Long moduleId) throws Exception {
+    public ResponseEntity<?> getModuleData(@RequestBody GetModuleDataRequest moduleDataRequest) throws Exception {
 
-        List<ModuleData> data = moduleService.getModuleData(moduleId);
+        long moduleId = moduleDataRequest.getModuleId();
+        int numberOfLastDataUpdates = moduleDataRequest.getNumberOfLastDataUpdates();
+        List<ModuleData> data = moduleDataService.getModuleData(moduleId, numberOfLastDataUpdates);
 
         return ResponseEntity.ok(data);
     }
@@ -72,5 +78,12 @@ public class DataController {
         moduleDataService.insertModuleData(payload);
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(path ="/getUserDevices")
+    ResponseEntity<?> getUserDevices(@RequestBody long userId) throws Exception {
+
+        List<Device> userDevices = deviceService.getUserDevices(userId);
+        return ResponseEntity.ok(userDevices);
     }
 }

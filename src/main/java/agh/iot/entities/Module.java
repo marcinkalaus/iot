@@ -1,4 +1,4 @@
-package agh.iot.models;
+package agh.iot.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,9 +20,9 @@ public class Module {
     private String name;
     @Column
     private boolean isActive;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "module_id")
-    private List<ModuleData> data;
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+//    @JoinColumn(name = "module_id")
+//    private List<ModuleData> data;
     @ManyToOne
     @JoinColumn(name="device_id", nullable=false)
     private Device device;

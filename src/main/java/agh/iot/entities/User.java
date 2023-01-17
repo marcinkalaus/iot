@@ -1,4 +1,4 @@
-package agh.iot.models;
+package agh.iot.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -41,7 +41,7 @@ public class User {
     private String password;
     private String token;
 
-    @ManyToMany
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    Set<Device> devices;
+//    @ManyToMany
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    Set<Device> devices;
 }

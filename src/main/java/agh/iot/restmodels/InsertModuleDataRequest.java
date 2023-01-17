@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class InsertModuleDataRequest {
-    private long id;
+    private long moduleId;
     private Integer dataInt;
     private String dataString;
     private Boolean dataBool;

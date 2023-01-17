@@ -1,8 +1,8 @@
 package agh.iot.services;
 
-import agh.iot.models.Device;
-import agh.iot.models.Module;
-import agh.iot.models.ModuleData;
+import agh.iot.entities.Device;
+import agh.iot.entities.Module;
+import agh.iot.entities.ModuleData;
 import agh.iot.repositories.DeviceRepository;
 import agh.iot.repositories.ModuleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,11 +40,11 @@ public class ModuleService {
         return updateModule;
     }
 
-    public List<ModuleData> getModuleData(long moduleId) {
-        Module module = moduleDao.findById(moduleId);
-        if (module == null) {
-            throw new EntityNotFoundException("Module not found, id: " + moduleId);
-        }
-        return module.getData();
-    }
+//    public List<ModuleData> getModuleData(long moduleId, int numberOfLastDataUpdates) {
+//        Module module = moduleDao.findById(moduleId);
+//        if (module == null) {
+//            throw new EntityNotFoundException("Module not found, id: " + moduleId);
+//        }
+//        return module.getData();
+//    }
 }

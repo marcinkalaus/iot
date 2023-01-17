@@ -1,6 +1,6 @@
 package agh.iot.repositories;
 
-import agh.iot.models.Device;
+import agh.iot.entities.Device;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

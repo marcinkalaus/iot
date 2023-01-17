@@ -1,4 +1,4 @@
-package agh.iot.models;
+package agh.iot.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -19,9 +20,12 @@ public class Device {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "devices_id")
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+//    @JoinColumn(name = "devices_id")
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    private List<Module> modules;
+    @ManyToMany
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<Module> modules;
+    List<User> users = new ArrayList<>();
 
 }
