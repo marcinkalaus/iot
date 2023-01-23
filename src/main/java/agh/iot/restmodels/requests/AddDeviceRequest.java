@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class AddDeviceRequest {
     String name;
-    long userId;
+    String guid;
 }

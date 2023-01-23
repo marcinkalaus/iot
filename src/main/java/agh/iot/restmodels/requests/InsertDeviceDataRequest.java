@@ -10,11 +10,10 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class InsertModuleDataRequest {
-    private long moduleId;
+public class InsertDeviceDataRequest {
+    private String guid;
     private Integer dataInt;
     private String dataString;
     private Boolean dataBool;
     private Float dataFloat;
-    private Date date;
 }

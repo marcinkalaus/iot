@@ -18,12 +18,20 @@ public class DeviceService {
     @Autowired
     private UserRepository userDao;
 
-    public Device save (String name, long userId) {
+    public Device save (String name, String guid, long userId) {
         Device device = new Device();
         device.setName(name);
+        device.setGuid(guid);
 
         User user = userDao.findById(userId).orElseThrow(EntityNotFoundException::new);
         device.getUsers().add(user);
+        return deviceDao.save(device);
+    }
+
+    public Device addUserToDevice(Device device, User user) {
+        List<User> deviceUsers = device.getUsers();
+        deviceUsers.add(user);
+        device.setUsers(deviceUsers);
         return deviceDao.save(device);
     }
 
@@ -34,6 +42,9 @@ public class DeviceService {
                 .collect(Collectors.toList());
     }
 
+    public List<Device> getAllDevices() {
+        return deviceDao.findAll();
+    }
     public void delete(Long id) {
         deviceDao.deleteById(id);
     }

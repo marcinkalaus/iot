@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "data")
-public class ModuleData {
+public class DeviceData {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -24,6 +24,6 @@ public class ModuleData {
     private long epochDate;
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "module_id")
-    private Module module;
+    @JoinColumn(name = "device_id")
+    private Device device;
 }

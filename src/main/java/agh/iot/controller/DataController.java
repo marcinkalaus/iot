@@ -1,16 +1,14 @@
 package agh.iot.controller;
 
 import agh.iot.entities.Device;
-import agh.iot.entities.Module;
-import agh.iot.entities.ModuleData;
+import agh.iot.entities.DeviceData;
 import agh.iot.entities.User;
 import agh.iot.restmodels.requests.*;
 import agh.iot.restmodels.responses.UserDataResponse;
 import agh.iot.security.JwtTokenUtil;
+import agh.iot.services.DeviceDataService;
 import agh.iot.services.DeviceService;
 import agh.iot.services.JwtUserDetailsService;
-import agh.iot.services.ModuleDataService;
-import agh.iot.services.ModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,19 +23,33 @@ public class DataController {
     @Autowired
     DeviceService deviceService;
     @Autowired
-    ModuleService moduleService;
-    @Autowired
-    ModuleDataService moduleDataService;
+    DeviceDataService deviceDataService;
     @Autowired
     JwtUserDetailsService userService;
     @Autowired
     JwtTokenUtil jwtTokenUtil;
 
     @PostMapping(path ="/addDevice")
-    public ResponseEntity<?> addDevice(@RequestBody AddDeviceRequest addDeviceRequest) throws Exception {
+    public ResponseEntity<?> addDevice(@RequestBody AddDeviceRequest addDeviceRequest,
+                                       @RequestHeader (name="Authorization") String tokenHeader) throws Exception {
+        Device device = null;
         String deviceName = addDeviceRequest.getName();
-        long userId = addDeviceRequest.getUserId();
-        Device device = deviceService.save(deviceName, userId);
+        String guid = addDeviceRequest.getGuid();
+
+        String username = jwtTokenUtil.getUsernameFromRequestHeader(tokenHeader);
+
+        List<Device> allDevices = deviceService.getAllDevices();
+        Device deviceWithRequestedGuid = allDevices.stream()
+                .filter(d -> d.getGuid().equals(guid))
+                .findFirst()
+                .orElse(null);
+
+        User user = userService.getUser(username);
+        if (deviceWithRequestedGuid == null) {
+            device = deviceService.save(deviceName, guid, user.getId());
+        } else {
+            device = deviceService.addUserToDevice(deviceWithRequestedGuid, user);
+        }
 
         return ResponseEntity.ok(device.getId());
     }
@@ -49,39 +61,39 @@ public class DataController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(path ="/addModule")
-    public ResponseEntity<?> addModule(@RequestBody AddModuleRequest payload) throws Exception {
-        Module module = moduleService.save(payload.getName(), payload.getDeviceId());
+//    @PostMapping(path ="/addModule")
+//    public ResponseEntity<?> addModule(@RequestBody AddModuleRequest payload) throws Exception {
+//        Module module = moduleService.save(payload.getName(), payload.getDeviceId());
+//
+//        return ResponseEntity.ok(module.getId());
+//    }
 
-        return ResponseEntity.ok(module.getId());
+//    @PutMapping(path ="/updateModule")
+//    public ResponseEntity<?> updateModule(@RequestBody UpdateModuleRequest updateModuleRequest) throws Exception {
+//        int moduleId = updateModuleRequest.getModuleId();
+//        boolean isActive = updateModuleRequest.isActive();
+//
+//        Module updateModule = moduleService.update(moduleId, isActive);
+//
+//        return ResponseEntity.ok(updateModule);
+//    }
+//
+    @GetMapping(path ="/getDeviceData", produces={"application/json"})
+    public ResponseEntity<?> getDeviceData(@RequestBody GetDeviceDataRequest deviceDataRequest) throws Exception {
+
+        long deviceId = deviceDataRequest.getDeviceId();
+        int numberOfLastDataUpdates = deviceDataRequest.getNumberOfLastDataUpdates();
+        List<DeviceData> data = deviceDataService.getDeviceData(deviceId, numberOfLastDataUpdates);
+
+        return ResponseEntity.ok().body(data);
     }
 
-    @PutMapping(path ="/updateModule")
-    public ResponseEntity<?> updateModule(@RequestBody UpdateModuleRequest updateModuleRequest) throws Exception {
-        int moduleId = updateModuleRequest.getModuleId();
-        boolean isActive = updateModuleRequest.isActive();
+    @PostMapping(path ="/insertDeviceData")
+    public ResponseEntity<?> insertDeviceData(@RequestBody InsertDeviceDataRequest payload) throws Exception {
 
-        Module updateModule = moduleService.update(moduleId, isActive);
+        deviceDataService.insertData(payload);
 
-        return ResponseEntity.ok(updateModule);
-    }
-
-    @GetMapping(path ="/getModuleData")
-    public ResponseEntity<?> getModuleData(@RequestBody GetModuleDataRequest moduleDataRequest) throws Exception {
-
-        long moduleId = moduleDataRequest.getModuleId();
-        int numberOfLastDataUpdates = moduleDataRequest.getNumberOfLastDataUpdates();
-        List<ModuleData> data = moduleDataService.getModuleData(moduleId, numberOfLastDataUpdates);
-
-        return ResponseEntity.ok(data);
-    }
-
-    @PostMapping(path ="/insertModuleData")
-    public ResponseEntity<?> insertModuleData(@RequestBody InsertModuleDataRequest payload) throws Exception {
-
-        moduleDataService.insertModuleData(payload);
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body("Data inserted!");
     }
 
     @GetMapping(path ="/getUserDevices")

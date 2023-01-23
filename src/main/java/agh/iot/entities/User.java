@@ -39,7 +39,6 @@ public class User {
     @Size(max = 120)
     @JsonIgnore
     private String password;
-    private String token;
 
 //    @ManyToMany
 //    @OnDelete(action = OnDeleteAction.CASCADE)

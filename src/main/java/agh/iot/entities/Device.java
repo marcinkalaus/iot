@@ -20,6 +20,7 @@ public class Device {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
+    private String guid;
 //    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 //    @JoinColumn(name = "devices_id")
 //    @OnDelete(action = OnDeleteAction.CASCADE)
