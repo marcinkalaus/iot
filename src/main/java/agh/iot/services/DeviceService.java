@@ -27,8 +27,8 @@ public class DeviceService {
         return deviceDao.save(device);
     }
 
-    public List<Device> getUserDevices(long userId) {
-        User user = userDao.findById(userId).orElseThrow(EntityNotFoundException::new);
+    public List<Device> getUserDevices(String username) {
+        User user = userDao.findByUsername(username);
         return deviceDao.findAll().stream()
                 .filter(device -> device.getUsers().contains(user))
                 .collect(Collectors.toList());

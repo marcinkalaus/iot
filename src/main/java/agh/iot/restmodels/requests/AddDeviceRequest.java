@@ -1,4 +1,4 @@
-package agh.iot.restmodels;
+package agh.iot.restmodels.requests;
 
 import lombok.Data;
 

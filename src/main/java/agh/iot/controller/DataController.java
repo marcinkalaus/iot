@@ -3,7 +3,10 @@ package agh.iot.controller;
 import agh.iot.entities.Device;
 import agh.iot.entities.Module;
 import agh.iot.entities.ModuleData;
-import agh.iot.restmodels.*;
+import agh.iot.entities.User;
+import agh.iot.restmodels.requests.*;
+import agh.iot.restmodels.responses.UserDataResponse;
+import agh.iot.security.JwtTokenUtil;
 import agh.iot.services.DeviceService;
 import agh.iot.services.JwtUserDetailsService;
 import agh.iot.services.ModuleDataService;
@@ -13,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @CrossOrigin
@@ -28,6 +30,8 @@ public class DataController {
     ModuleDataService moduleDataService;
     @Autowired
     JwtUserDetailsService userService;
+    @Autowired
+    JwtTokenUtil jwtTokenUtil;
 
     @PostMapping(path ="/addDevice")
     public ResponseEntity<?> addDevice(@RequestBody AddDeviceRequest addDeviceRequest) throws Exception {
@@ -81,9 +85,26 @@ public class DataController {
     }
 
     @GetMapping(path ="/getUserDevices")
-    ResponseEntity<?> getUserDevices(@RequestBody long userId) throws Exception {
+    ResponseEntity<?> getUserDevices(@RequestHeader (name="Authorization") String tokenHeader) throws Exception {
 
-        List<Device> userDevices = deviceService.getUserDevices(userId);
+        String username = jwtTokenUtil.getUsernameFromRequestHeader(tokenHeader);
+        List<Device> userDevices = deviceService.getUserDevices(username);
         return ResponseEntity.ok(userDevices);
+    }
+
+    @GetMapping(path ="/getUserData", produces={"application/json"})
+    ResponseEntity<?> getUserData(@RequestHeader (name="Authorization") String tokenHeader) throws Exception {
+
+        String username = jwtTokenUtil.getUsernameFromRequestHeader(tokenHeader);
+
+        List<Device> userDevices = deviceService.getUserDevices(username);
+        User user = userService.getUser(username);
+
+        UserDataResponse response = new UserDataResponse();
+        response.setUsername(username);
+        response.setEmail(user.getEmail());
+        response.setUserDevices(userDevices);
+
+        return ResponseEntity.ok().body(response);
     }
 }

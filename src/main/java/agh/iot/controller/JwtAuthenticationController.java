@@ -1,11 +1,14 @@
 package agh.iot.controller;
 
 import agh.iot.dto.UserDto;
+import agh.iot.entities.User;
+import agh.iot.restmodels.responses.SignUpResponse;
 import agh.iot.security.JwtTokenUtil;
 import agh.iot.services.JwtUserDetailsService;
-import agh.iot.restmodels.JwtRequest;
-import agh.iot.restmodels.JwtResponse;
+import agh.iot.restmodels.requests.JwtRequest;
+import agh.iot.restmodels.responses.JwtResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -40,9 +43,14 @@ public class JwtAuthenticationController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-    @PostMapping( path = "signup", consumes = {"application/json"})
-    public ResponseEntity<?> saveUser(@RequestBody UserDto user) throws Exception {
-        return ResponseEntity.ok(userDetailsService.save(user));
+    @PostMapping( path = "signup", consumes = {"application/json"}, produces={"application/json"})
+    public ResponseEntity<?> saveUser(@RequestBody UserDto userDto) throws Exception {
+        User user = userDetailsService.save(userDto);
+        if (user == null) {
+            SignUpResponse responseBody = new SignUpResponse("User already exists!");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(responseBody);
+        }
+        return ResponseEntity.ok(user);
     }
 
     private void authenticate(String username, String password) throws Exception {

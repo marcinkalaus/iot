@@ -4,11 +4,11 @@ import agh.iot.entities.Module;
 import agh.iot.entities.ModuleData;
 import agh.iot.repositories.ModuleDataRepository;
 import agh.iot.repositories.ModuleRepository;
-import agh.iot.restmodels.InsertModuleDataRequest;
+import agh.iot.restmodels.requests.InsertModuleDataRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +26,7 @@ public class ModuleDataService {
         moduleData.setDataString(payload.getDataString());
         moduleData.setDataBool(payload.getDataBool());
         moduleData.setDataFloat(payload.getDataFloat());
+        moduleData.setEpochDate(System.currentTimeMillis());
 
         Module module = moduleDao.findById(payload.getModuleId());
         moduleData.setModule(module);

@@ -1,4 +1,4 @@
-package agh.iot.restmodels;
+package agh.iot.restmodels.responses;
 
 import java.io.Serializable;
 

@@ -1,8 +1,10 @@
-package agh.iot.restmodels;
+package agh.iot.restmodels.requests;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
 
 
 @NoArgsConstructor
@@ -14,4 +16,5 @@ public class InsertModuleDataRequest {
     private String dataString;
     private Boolean dataBool;
     private Float dataFloat;
+    private Date date;
 }
