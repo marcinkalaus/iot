@@ -23,16 +23,13 @@ public class DeviceDataService {
     public DeviceData insertData(InsertDeviceDataRequest payload) {
         DeviceData deviceData = new DeviceData();
         deviceData.setDataInt(payload.getDataInt());
-        deviceData.setDataString(payload.getDataString());
-        deviceData.setDataBool(payload.getDataBool());
-        deviceData.setDataFloat(payload.getDataFloat());
         deviceData.setEpochDate(System.currentTimeMillis());
         Device device = null;
         try {
            device = deviceDao.findAll().stream()
                     .filter(d -> d.getGuid().equals(payload.getGuid()))
                     .findFirst()
-                    .orElseThrow();
+                    .orElseThrow(Exception::new);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -44,7 +41,7 @@ public class DeviceDataService {
     public List<DeviceData> getDeviceData(long deviceId, int numberOfLastDataUpdates) {
 
         return deviceDataDao.findAll().stream()
-                .filter(d -> d.getId() == deviceId)
+                .filter(d -> d.getDevice().getId() == deviceId)
                 .sorted(Comparator.comparingLong(DeviceData::getEpochDate)
                 .reversed())
                 .limit(numberOfLastDataUpdates)

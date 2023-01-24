@@ -22,9 +22,6 @@ public class Device {
     private String name;
     private String guid;
 //    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-//    @JoinColumn(name = "devices_id")
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    private List<Module> modules;
     @ManyToMany
     @OnDelete(action = OnDeleteAction.CASCADE)
     List<User> users = new ArrayList<>();

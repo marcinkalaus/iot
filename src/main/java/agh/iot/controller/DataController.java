@@ -3,7 +3,8 @@ package agh.iot.controller;
 import agh.iot.entities.Device;
 import agh.iot.entities.DeviceData;
 import agh.iot.entities.User;
-import agh.iot.restmodels.requests.*;
+import agh.iot.restmodels.requests.AddDeviceRequest;
+import agh.iot.restmodels.requests.InsertDeviceDataRequest;
 import agh.iot.restmodels.responses.UserDataResponse;
 import agh.iot.security.JwtTokenUtil;
 import agh.iot.services.DeviceDataService;
@@ -58,31 +59,13 @@ public class DataController {
     public ResponseEntity<?> removeDevice(@RequestBody Long deviceId) throws Exception {
         deviceService.delete(deviceId);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body("Device removed successfully!");
     }
 
-//    @PostMapping(path ="/addModule")
-//    public ResponseEntity<?> addModule(@RequestBody AddModuleRequest payload) throws Exception {
-//        Module module = moduleService.save(payload.getName(), payload.getDeviceId());
-//
-//        return ResponseEntity.ok(module.getId());
-//    }
+    @GetMapping (path ="/getDeviceData", produces={"application/json"})
+    public ResponseEntity<?> getDeviceData(@RequestParam long deviceId,
+                                           @RequestParam int numberOfLastDataUpdates) throws Exception {
 
-//    @PutMapping(path ="/updateModule")
-//    public ResponseEntity<?> updateModule(@RequestBody UpdateModuleRequest updateModuleRequest) throws Exception {
-//        int moduleId = updateModuleRequest.getModuleId();
-//        boolean isActive = updateModuleRequest.isActive();
-//
-//        Module updateModule = moduleService.update(moduleId, isActive);
-//
-//        return ResponseEntity.ok(updateModule);
-//    }
-//
-    @GetMapping(path ="/getDeviceData", produces={"application/json"})
-    public ResponseEntity<?> getDeviceData(@RequestBody GetDeviceDataRequest deviceDataRequest) throws Exception {
-
-        long deviceId = deviceDataRequest.getDeviceId();
-        int numberOfLastDataUpdates = deviceDataRequest.getNumberOfLastDataUpdates();
         List<DeviceData> data = deviceDataService.getDeviceData(deviceId, numberOfLastDataUpdates);
 
         return ResponseEntity.ok().body(data);
