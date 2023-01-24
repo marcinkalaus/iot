@@ -16,6 +16,7 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.apache.commons.validator.routines.EmailValidator;
 
 @RestController
 @CrossOrigin
@@ -46,6 +47,10 @@ public class JwtAuthenticationController {
     @PostMapping( path = "signup", consumes = {"application/json"}, produces={"application/json"})
     public ResponseEntity<?> saveUser(@RequestBody UserDto userDto) throws Exception {
         User user = userDetailsService.save(userDto);
+        if(!EmailValidator.getInstance().isValid(userDto.getEmail())) {
+            SignUpResponse responseBody = new SignUpResponse("Wrong email pattern!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+        }
         if (user == null) {
             SignUpResponse responseBody = new SignUpResponse("User already exists!");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(responseBody);

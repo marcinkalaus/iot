@@ -45,6 +45,21 @@ public class DeviceService {
     public List<Device> getAllDevices() {
         return deviceDao.findAll();
     }
+
+    public void forgetDevice(Long deviceId, String username) {
+        User user = userDao.findByUsername(username);
+        Device device = deviceDao.findAll().stream()
+                .filter(d -> d.getId() == deviceId )
+                .findFirst()
+                .orElse(null);
+
+        if(device != null) {
+            List<User> deviceUsers = device.getUsers();
+            deviceUsers.remove(user);
+            device.setUsers(deviceUsers);
+            deviceDao.save(device);
+        }
+    }
     public void delete(Long id) {
         deviceDao.deleteById(id);
     }

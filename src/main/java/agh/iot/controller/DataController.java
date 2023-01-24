@@ -55,11 +55,22 @@ public class DataController {
         return ResponseEntity.ok(device.getId());
     }
 
-    @DeleteMapping(path="/removeDevice")
+    @DeleteMapping(path="/removeDevice", produces={"application/json"})
     public ResponseEntity<?> removeDevice(@RequestBody Long deviceId) throws Exception {
         deviceService.delete(deviceId);
 
         return ResponseEntity.ok().body("Device removed successfully!");
+    }
+
+    @PutMapping(path="/forgetDevice", produces={"application/json"})
+    public ResponseEntity<?> forgetDevice(@RequestParam long deviceId,
+                                          @RequestHeader (name="Authorization") String tokenHeader) throws Exception {
+
+        String username = jwtTokenUtil.getUsernameFromRequestHeader(tokenHeader);
+
+        deviceService.forgetDevice(deviceId, username);
+
+        return ResponseEntity.ok().body("Device has been forgotten!");
     }
 
     @GetMapping (path ="/getDeviceData", produces={"application/json"})
@@ -71,7 +82,7 @@ public class DataController {
         return ResponseEntity.ok().body(data);
     }
 
-    @PostMapping(path ="/insertDeviceData")
+    @PostMapping(path ="/insertDeviceData", produces={"application/json"})
     public ResponseEntity<?> insertDeviceData(@RequestBody InsertDeviceDataRequest payload) throws Exception {
 
         deviceDataService.insertData(payload);
