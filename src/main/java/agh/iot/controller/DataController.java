@@ -11,6 +11,7 @@ import agh.iot.services.DeviceDataService;
 import agh.iot.services.DeviceService;
 import agh.iot.services.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -85,8 +86,11 @@ public class DataController {
     @PostMapping(path ="/insertDeviceData", produces={"application/json"})
     public ResponseEntity<?> insertDeviceData(@RequestBody InsertDeviceDataRequest payload) throws Exception {
 
-        deviceDataService.insertData(payload);
+        DeviceData data = deviceDataService.insertData(payload);
 
+        if(data == null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Cannot update data!");
+        }
         return ResponseEntity.ok().body("Data inserted!");
     }
 

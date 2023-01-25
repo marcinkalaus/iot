@@ -33,6 +33,11 @@ public class DeviceDataService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        if (device == null) {
+            return null;
+        }
+
         deviceData.setDevice(device);
 
         return deviceDataDao.save(deviceData);
