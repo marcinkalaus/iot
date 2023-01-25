@@ -46,11 +46,14 @@ public class JwtAuthenticationController {
 
     @PostMapping( path = "signup", consumes = {"application/json"}, produces={"application/json"})
     public ResponseEntity<?> saveUser(@RequestBody UserDto userDto) throws Exception {
-        User user = userDetailsService.save(userDto);
+
         if(!EmailValidator.getInstance().isValid(userDto.getEmail())) {
             SignUpResponse responseBody = new SignUpResponse("Wrong email pattern!");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
         }
+
+        User user = userDetailsService.save(userDto);
+
         if (user == null) {
             SignUpResponse responseBody = new SignUpResponse("User already exists!");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(responseBody);

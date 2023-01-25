@@ -117,4 +117,10 @@ public class DataController {
 
         return ResponseEntity.ok().body(response);
     }
+
+    @GetMapping (path ="/syncDate", produces={"application/json"})
+    public ResponseEntity<?> getServerData() throws Exception {
+
+        return ResponseEntity.ok().body(System.currentTimeMillis()/1000);
+    }
 }

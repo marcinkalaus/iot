@@ -11,4 +11,5 @@ import lombok.NoArgsConstructor;
 public class InsertDeviceDataRequest {
     private String guid;
     private Integer dataInt;
+    private long epochDate;
 }

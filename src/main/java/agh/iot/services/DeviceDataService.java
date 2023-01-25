@@ -23,7 +23,7 @@ public class DeviceDataService {
     public DeviceData insertData(InsertDeviceDataRequest payload) {
         DeviceData deviceData = new DeviceData();
         deviceData.setDataInt(payload.getDataInt());
-        deviceData.setEpochDate(System.currentTimeMillis());
+        deviceData.setEpochDate(payload.getEpochDate()*1000);
         Device device = null;
         try {
            device = deviceDao.findAll().stream()

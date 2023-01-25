@@ -21,7 +21,6 @@ public class Device {
     private long id;
     private String name;
     private String guid;
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @ManyToMany
     @OnDelete(action = OnDeleteAction.CASCADE)
     List<User> users = new ArrayList<>();
