@@ -67,7 +67,6 @@ public class JwtTokenUtil {
     }
 
     private Boolean ignoreTokenExpiration(String token) {
-        // here you specify tokens, for that the expiration is ignored
         return false;
     }
 

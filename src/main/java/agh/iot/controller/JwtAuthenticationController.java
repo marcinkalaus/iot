@@ -71,11 +71,7 @@ public class JwtAuthenticationController {
         } catch (DisabledException e) {
             throw new Exception("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
-            respondWithUnathorized();
+            throw new Exception("INVALID_CREDENTIALS", e);
         }
-    }
-
-    private ResponseEntity<String> respondWithUnathorized() {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Wrong email or password!");
     }
 }

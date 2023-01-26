@@ -50,7 +50,7 @@ public class DataController {
         if (deviceWithRequestedGuid == null) {
             device = deviceService.save(deviceName, guid, user.getId());
         } else {
-            device = deviceService.addUserToDeviceOrUpdateName(deviceWithRequestedGuid, user, deviceName);
+            device = deviceService.addUserToDeviceAndUpdateDeviceName(deviceWithRequestedGuid, user, deviceName);
         }
 
         return ResponseEntity.ok(device.getId());
