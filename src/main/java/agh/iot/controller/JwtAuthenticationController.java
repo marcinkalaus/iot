@@ -39,6 +39,10 @@ public class JwtAuthenticationController {
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User doesn't exist");
+        }
+
         final String token = jwtTokenUtil.generateToken(userDetails);
 
         return ResponseEntity.ok(new JwtResponse(token));
@@ -67,7 +71,11 @@ public class JwtAuthenticationController {
         } catch (DisabledException e) {
             throw new Exception("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
+            respondWithUnathorized();
         }
+    }
+
+    private ResponseEntity<String> respondWithUnathorized() {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Wrong email or password!");
     }
 }

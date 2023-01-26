@@ -28,8 +28,14 @@ public class DeviceService {
         return deviceDao.save(device);
     }
 
-    public Device addUserToDevice(Device device, User user) {
+    public Device addUserToDeviceOrUpdateName(Device device, User user, String deviceName) {
         List<User> deviceUsers = device.getUsers();
+
+        if (deviceUsers.contains(user)) {
+            device.setName(deviceName);
+            return deviceDao.save(device);
+        }
+
         deviceUsers.add(user);
         device.setUsers(deviceUsers);
         return deviceDao.save(device);
